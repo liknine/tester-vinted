@@ -6,9 +6,6 @@
     <title>Vinted Sniper PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* =========================================
-           🎨 ЦВЕТА И ТЕМЫ (СВЕТЛАЯ / ТЕМНАЯ)
-           ========================================= */
         :root {
             --bg: #f2f2f7; 
             --surface: #ffffff; 
@@ -41,12 +38,10 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; 
             background-color: var(--bg); 
             color: var(--text); 
-            padding-bottom: 110px; /* Место под нижнюю кнопку */
+            padding-bottom: 110px;
         }
         
-        /* =========================================
-           📌 НАВИГАЦИЯ (ВЕРХНЕЕ МЕНЮ)
-           ========================================= */
+        /* Верхнее меню */
         .tab-bar { 
             display: flex; background: var(--glass-bg); backdrop-filter: blur(20px); 
             -webkit-backdrop-filter: blur(20px); padding: 10px 16px; position: sticky; 
@@ -62,9 +57,7 @@
         .content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* =========================================
-           📦 КАРТОЧКИ И ЭЛЕМЕНТЫ ВВОДА
-           ========================================= */
+        /* Карточки и инпуты */
         .card { 
             background: var(--surface); border-radius: 20px; padding: 20px; 
             margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--border); 
@@ -83,7 +76,7 @@
         input::placeholder { color: var(--secondary); font-weight: 400; }
         input:focus { border-color: var(--primary); background: var(--surface); box-shadow: 0 4px 16px rgba(10, 132, 255, 0.15); }
 
-        /* Переключатели (Кнопки в ряд) */
+        /* Переключатели и чипы */
         .segment-control { display: flex; flex-wrap: wrap; gap: 6px; background: var(--input-bg); border-radius: 14px; padding: 6px; }
         .segment-btn { 
             flex: 1; min-width: 30%; text-align: center; padding: 12px; font-size: 14px; 
@@ -92,7 +85,6 @@
         }
         .segment-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: scale(1.02); }
         
-        /* Чипы (Состояния) */
         .chips-container { display: flex; flex-wrap: wrap; gap: 10px; }
         .chip { 
             padding: 12px 18px; background: var(--input-bg); border: 2px solid transparent; 
@@ -101,9 +93,7 @@
         }
         .chip.selected { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3); transform: translateY(-2px); }
 
-        /* =========================================
-           🚀 ПЛАВАЮЩАЯ КНОПКА ВНИЗУ
-           ========================================= */
+        /* Нижняя кнопка */
         .bottom-bar { 
             position: fixed; bottom: 0; left: 0; right: 0; padding: 16px 20px 32px; 
             background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 100; pointer-events: none; 
@@ -116,9 +106,7 @@
         button.btn:active { transform: scale(0.96); opacity: 0.9; }
         button.btn.disabled { background: var(--input-bg); color: var(--secondary); box-shadow: none; cursor: not-allowed; }
 
-        /* =========================================
-           👤 ПРОФИЛЬ И СПИСОК ЗАСАД
-           ========================================= */
+        /* Профиль и список засад */
         .profile-avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #a18cd1, #fbc2eb); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 8px 20px rgba(161, 140, 209, 0.4); }
         .status-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: 800; font-size: 12px; letter-spacing: 0.5px; }
         .status-free { background: rgba(255, 59, 48, 0.1); color: var(--danger); }
@@ -131,9 +119,7 @@
         .edit-btn { background: rgba(10, 132, 255, 0.1); color: var(--primary); }
         .delete-btn { background: rgba(255, 59, 48, 0.1); color: var(--danger); }
 
-        /* =========================================
-           👑 ПРЕМИУМ ТАРИФЫ
-           ========================================= */
+        /* Премиум Тарифы */
         .premium-card { background: linear-gradient(145deg, #1c1c1e, #000000); border: 1px solid #38383a; color: white; border-radius: 24px; padding: 30px 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         .premium-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 60%); z-index: 0; pointer-events: none; }
         .premium-content { position: relative; z-index: 1; }
@@ -143,16 +129,14 @@
 </head>
 <body>
 
-    <!-- ВЕРХНЕЕ МЕНЮ -->
+    <!-- НАВИГАЦИЯ -->
     <div class="tab-bar">
         <div class="tab active" onclick="switchTab('search')">🔍 Поиск</div>
         <div class="tab" onclick="switchTab('profile')">👤 Профиль</div>
         <div class="tab" onclick="switchTab('premium')">👑 Premium</div>
     </div>
 
-    <!-- =========================================
-         ВКЛАДКА 1: ПОИСК (СОЗДАНИЕ ЗАСАДЫ)
-         ========================================= -->
+    <!-- ВКЛАДКА: ПОИСК (СОЗДАНИЕ ЗАСАДЫ) -->
     <div id="search" class="content active">
         <div class="card">
             <div class="section-title">География парсинга</div>
@@ -202,6 +186,7 @@
         </div>
 
         <div class="card" style="margin-bottom: 100px;">
+            <!-- ЖЕЛЕЗОБЕТОННЫЕ КАТЕГОРИИ -->
             <div class="section-title">Категория</div>
             <div class="segment-control" id="category-selector" style="margin-bottom: 24px;">
                 <div class="segment-btn active" data-val="all" onclick="selectSegment('category', this)">Все</div>
@@ -224,9 +209,7 @@
         </div>
     </div>
 
-    <!-- =========================================
-         ВКЛАДКА 2: ПРОФИЛЬ (АКТИВНЫЕ ЗАСАДЫ)
-         ========================================= -->
+    <!-- ВКЛАДКА: ПРОФИЛЬ (АКТИВНЫЕ ЗАСАДЫ И РЕДАКТИРОВАНИЕ) -->
     <div id="profile" class="content">
         <div class="card" style="text-align: center; padding: 32px 20px;">
             <div class="profile-avatar">👨‍💻</div>
@@ -238,9 +221,7 @@
         <div id="searches-container"></div>
     </div>
 
-    <!-- =========================================
-         ВКЛАДКА 3: PREMIUM (ПОКУПКА)
-         ========================================= -->
+    <!-- ВКЛАДКА: PREMIUM (ТАРИФЫ И ОПЛАТА) -->
     <div id="premium" class="content">
         <div class="premium-card">
             <div class="premium-content">
@@ -272,44 +253,39 @@
         </div>
     </div>
 
-    <!-- =========================================
-         СЦЕНАРИИ (JAVASCRIPT)
-         ========================================= -->
+    <!-- СКРИПТЫ И ЛОГИКА -->
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
         try { tg.setHeaderColor('secondary_bg_color'); } catch(e) {}
 
-        // --- ПАРСИНГ ДАННЫХ ОТ БОТА ---
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('id') || tg.initDataUnsafe?.user?.id || '—';
         const premiumDays = parseInt(urlParams.get('days') || '0');
         const userName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
         
         let userSearches = [];
-        let currentEditId = null; // ID поиска, который мы сейчас редактируем
+        let currentEditId = null; // Флаг: редактируем ли мы сейчас поиск
         
         try { 
             if (urlParams.get('searches')) {
                 userSearches = JSON.parse(decodeURIComponent(urlParams.get('searches'))); 
             }
-        } catch(e) { console.error("Ошибка парсинга засад:", e); }
+        } catch(e) { console.error("Ошибка загрузки поисков", e); }
 
-        // --- ЗАПОЛНЕНИЕ ПРОФИЛЯ ---
         document.getElementById('user-name').innerText = userName;
         document.getElementById('user-id').innerText = userId;
         document.getElementById('status-container').innerHTML = premiumDays > 0 
             ? `<div class="status-badge status-premium">★ PREMIUM (${premiumDays} ДН.)</div>`
             : `<div class="status-badge status-free">🔴 БЕЗ ПОДПИСКИ</div>`;
 
-        // Блокировка кнопки, если нет премиума
         const submitBtn = document.getElementById('submit-btn');
         if (premiumDays <= 0) {
             submitBtn.classList.add('disabled');
             submitBtn.innerText = "🔒 Требуется Premium";
         }
 
-        // --- ОТРИСОВКА АКТИВНЫХ ЗАСАД В ПРОФИЛЕ ---
+        // Отрисовка списка поисков
         const flags = { 'vinted.fr': '🇫🇷', 'vinted.it': '🇮🇹', 'vinted.pl': '🇵🇱', 'vinted.es': '🇪🇸', 'vinted.de': '🇩🇪' };
         const sCont = document.getElementById('searches-container');
         
@@ -317,7 +293,6 @@
             sCont.innerHTML = `<div class="card" style="text-align: center; color: var(--secondary); font-size: 14px; border: 2px dashed var(--border);">У вас пока нет активных засад</div>`;
         } else {
             userSearches.forEach(s => {
-                // Формируем текст цены
                 let priceText = "Любая цена";
                 let minP = s.min_price && s.min_price > 0 ? s.min_price : null;
                 let maxP = s.max_price && s.max_price > 0 ? s.max_price : null;
@@ -342,7 +317,7 @@
             });
         }
 
-        // --- ФУНКЦИИ ИНТЕРФЕЙСА ---
+        // Переключение вкладок
         function switchTab(tabId) {
             document.querySelectorAll('.content, .tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
@@ -351,6 +326,7 @@
             try { tg.HapticFeedback.impactOccurred('light'); } catch(e){}
         }
 
+        // Переключатели
         function selectSegment(groupId, el) {
             document.querySelectorAll(`#${groupId}-selector .segment-btn`).forEach(b => b.classList.remove('active'));
             el.classList.add('active');
@@ -368,7 +344,7 @@
             try { tg.HapticFeedback.selectionChanged(); } catch(e){}
         }
 
-        // --- РЕДАКТИРОВАНИЕ ЗАСАДЫ ---
+        // Редактирование (Подстановка старых данных)
         function startEdit(id) {
             const s = userSearches.find(x => x.id === id);
             if (!s) return;
@@ -376,14 +352,12 @@
             currentEditId = id;
             try { tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
             
-            // Вставляем данные
             document.getElementById('brand').value = s.brand || '';
             document.getElementById('min_price').value = (s.min_price && s.min_price > 0) ? s.min_price : '';
             document.getElementById('max_price').value = (s.max_price && s.max_price > 0) ? s.max_price : '';
             document.getElementById('size').value = s.size || '';
             document.getElementById('minus_words').value = s.minus_words || '';
             
-            // Выбираем сегменты
             document.querySelectorAll('#domain-selector .segment-btn').forEach(b => {
                 b.classList.remove('active');
                 if (b.getAttribute('data-val') === s.domain) b.classList.add('active');
@@ -393,7 +367,6 @@
                 if (b.getAttribute('data-val') === s.category) b.classList.add('active');
             });
             
-            // Выбираем состояния
             document.querySelectorAll('#conditions-container .chip').forEach(c => c.classList.remove('selected'));
             if (s.conditions) {
                 try {
@@ -404,17 +377,15 @@
                 } catch(e) {}
             }
             
-            // Изменяем кнопку
             const btn = document.getElementById('submit-btn');
             btn.innerText = "💾 Сохранить изменения";
             btn.style.background = "linear-gradient(135deg, #34c759, #28a745)";
             
-            // Переходим на вкладку
             switchTab('search');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- ОТПРАВКА ДАННЫХ В БОТ ---
+        // Отправка данных в ПИТОН
         function sendSearch() {
             if (premiumDays <= 0) { tg.showAlert("Купите Premium для использования Снайпера!"); return; }
             
@@ -427,7 +398,7 @@
             const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
             
             const data = {
-                action: currentEditId ? "edit" : "add", // Определяем, создаем или обновляем
+                action: currentEditId ? "edit" : "add",
                 search_id: currentEditId,
                 domain: document.querySelector('#domain-selector .active').getAttribute('data-val'),
                 category: document.querySelector('#category-selector .active').getAttribute('data-val'),
@@ -443,7 +414,6 @@
             tg.sendData(JSON.stringify(data)); 
         }
 
-        // --- УДАЛЕНИЕ ---
         function deleteSearch(searchId) {
             try { tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
             tg.showConfirm("Снять эту засаду?", function(isConfirmed) {
@@ -451,17 +421,15 @@
             });
         }
 
-        // --- ОПЛАТА ---
         function buyMethod(method) {
             try { tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
             const plan = document.querySelector('#plan-selector .active').getAttribute('data-val');
             tg.sendData(JSON.stringify({ action: method, plan: plan }));
         }
 
-        // --- АДМИН ---
         function contactAdmin() {
             try { tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
-            tg.openTelegramLink('https://t.me/liknine?text=' + encodeURIComponent("Привет! Хочу купить подписку. ID: " + userId));
+            tg.openTelegramLink('https://t.me/liknine?text=' + encodeURIComponent("Привет! Хочу купить подписку. Мой ID: " + userId));
         }
     </script>
 </body>
