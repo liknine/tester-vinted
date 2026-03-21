@@ -79,12 +79,16 @@
     </div>
 
     <!-- ВКЛАДКА: ПОИСК -->
+        <!-- ВКЛАДКА: ПОИСК -->
     <div id="search" class="content active">
         <div class="card">
             <div class="section-title">География парсинга</div>
             <div class="segment-control" id="domain-selector">
-                <div class="segment-btn active" data-val="vinted.fr" onclick="selectSegment('domain', this)">🇫🇷 Франция</div>
-                <div class="segment-btn" data-val="vinted.it" onclick="selectSegment('domain', this)">🇮🇹 Италия</div>
+                <div class="segment-btn active" data-val="vinted.fr" onclick="selectSegment('domain', this)">🇫🇷 FR</div>
+                <div class="segment-btn" data-val="vinted.it" onclick="selectSegment('domain', this)">🇮🇹 IT</div>
+                <div class="segment-btn" data-val="vinted.pl" onclick="selectSegment('domain', this)">🇵🇱 PL</div>
+                <div class="segment-btn" data-val="vinted.es" onclick="selectSegment('domain', this)">🇪🇸 ES</div>
+                <div class="segment-btn" data-val="vinted.de" onclick="selectSegment('domain', this)">🇩🇪 DE</div>
             </div>
         </div>
 
@@ -114,23 +118,32 @@
                     <input type="text" id="size" placeholder="Размер (S, M, 42...)">
                 </div>
             </div>
+
+            <!-- НОВОЕ: МИНУС СЛОВА -->
+            <div class="input-group" style="margin-top: 14px;">
+                <div class="input-wrapper">
+                    <span class="input-icon">🚫</span>
+                    <input type="text" id="minus_words" placeholder="Исключить слова (через запятую)">
+                </div>
+            </div>
         </div>
 
         <div class="card" style="margin-bottom: 100px;">
             <div class="section-title">Категория</div>
             <div class="segment-control" id="category-selector" style="margin-bottom: 24px;">
                 <div class="segment-btn active" data-val="all" onclick="selectSegment('category', this)">Все</div>
-                <div class="segment-btn" data-val="clothes" onclick="selectSegment('category', this)">👕 Одежда</div>
                 <div class="segment-btn" data-val="shoes" onclick="selectSegment('category', this)">👟 Обувь</div>
+                <div class="segment-btn" data-val="hoodies" onclick="selectSegment('category', this)">🧥 Кофты</div>
+                <div class="segment-btn" data-val="pants" onclick="selectSegment('category', this)">👖 Штаны</div>
+                <div class="segment-btn" data-val="outerwear" onclick="selectSegment('category', this)">🧥 Куртки</div>
             </div>
 
             <div class="section-title">Состояние</div>
             <div class="chips-container" id="conditions-container">
                 <div class="chip" data-val="6" onclick="toggleChip(this)">Новое с биркой</div>
-                <div class="chip" data-val="1" onclick="toggleChip(this)">Новое без бирки</div>
+                <div class="chip" data-val="1" onclick="toggleChip(this)">Без бирки</div>
                 <div class="chip" data-val="2" onclick="toggleChip(this)">Отличное</div>
                 <div class="chip" data-val="3" onclick="toggleChip(this)">Хорошее</div>
-                <div class="chip" data-val="4" onclick="toggleChip(this)">Нормальное</div>
             </div>
         </div>
 
@@ -278,6 +291,7 @@
                 size: document.getElementById('size').value.trim(),
                 min_price: min_price,
                 max_price: max_price,
+                minus_words: document.getElementById('minus_words').value.trim(), // ДОБАВИЛИ
                 conditions: conditions 
             };
             try { tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
