@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vinted Sniper PRO</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg: #f2f2f7; --surface: #ffffff; --primary: #007aff;
+            --text: #000000; --secondary: #8e8e93; --border: #e5e5ea;
+            --danger: #ff3b30; --gold: #ff9500; --green: #34c759;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #000000; --surface: #1c1c1e; --text: #ffffff;
+                --border: #38383a; --primary: #0a84ff;
+                --glass-bg: rgba(28, 28, 30, 0.85);
+            }
+        }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 100px; }
+        .tab-bar { display: flex; background: var(--glass-bg); backdrop-filter: blur(20px); padding: 8px 12px; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border); gap: 8px; }
+        .tab { flex: 1; text-align: center; padding: 10px 0; font-size: 14px; font-weight: 600; color: var(--secondary); cursor: pointer; border-radius: 10px; transition: 0.3s; }
+        .tab.active { background: var(--surface); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .content { display: none; padding: 16px; animation: fadeIn 0.4s ease; }
+        .content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: var(--surface); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 0.5px solid var(--border); }
+        .section-title { font-size: 12px; font-weight: 700; color: var(--secondary); margin-bottom: 12px; text-transform: uppercase; }
+        .input-group { margin-bottom: 16px; display: flex; gap: 10px; }
+        .input-group:last-child { margin-bottom: 0; }
+        .input-wrapper { position: relative; flex: 1; }
+        .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--secondary); }
+        input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 14px 14px 14px 42px; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--primary); }
+        .segment-control { display: flex; flex-wrap: wrap; gap: 4px; background: var(--bg); border-radius: 12px; padding: 4px; border: 1px solid var(--border); }
+        .segment-btn { flex: 1; min-width: 45%; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; color: var(--secondary); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .segment-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        .chips-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { padding: 10px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--secondary); }
+        .chip.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px 20px 24px; background: var(--glass-bg); backdrop-filter: blur(20px); border-top: 0.5px solid var(--border); z-index: 100; }
+        button.btn { width: 100%; background: linear-gradient(135deg, var(--primary), #005bb5); color: #fff; border: none; padding: 16px; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3); }
+        button.btn:active { transform: scale(0.97); }
+        button.btn.disabled { background: var(--secondary); box-shadow: none; cursor: not-allowed; }
+        .profile-avatar { width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary), #8a2be2); border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+        .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 12px; }
+        .status-free { background: rgba(255, 59, 48, 0.1); color: var(--danger); }
+        .status-premium { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; }
+        .search-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg); padding: 16px; border-radius: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .delete-btn { background: rgba(255, 59, 48, 0.1); color: var(--danger); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .premium-card { background: linear-gradient(135deg, #1c1c1e, #000000); border: 1px solid #38383a; color: white; border-radius: 20px; padding: 24px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="tab-bar">
+        <div class="tab active" onclick="switchTab('search')">🔍 Поиск</div>
+        <div class="tab" onclick="switchTab('profile')">👤 Профиль</div>
+        <div class="tab" onclick="switchTab('premium')">👑 Premium</div>
+    </div>
+
+    <!-- ВКЛАДКА: ПОИСК -->
+    <div id="search" class="content active">
+        <div class="card">
+            <div class="section-title">География поиска</div>
+            <div class="segment-control" id="domain-selector">
+                <div class="segment-btn active" data-val="vinted.fr" onclick="selectSegment('domain', this)">🇫🇷 Франция</div>
+                <div class="segment-btn" data-val="vinted.it" onclick="selectSegment('domain', this)">🇮🇹 Италия</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Основные фильтры</div>
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <span class="input-icon">🏷️</span>
+                    <input type="text" id="brand" placeholder="Бренд (Nike, Carhartt)">
+                </div>
+            </div>
+            
+            <!-- НОВЫЙ БЛОК ЦЕНЫ (МИН И МАКС) -->
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <span class="input-icon">💶</span>
+                    <input type="number" id="min_price" placeholder="От (Мин.)">
+                </div>
+                <div class="input-wrapper">
+                    <span class="input-icon">💶</span>
+                    <input type="number" id="max_price" placeholder="До (Макс.)">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <span class="input-icon">📏</span>
+                    <input type="text" id="size" placeholder="Размер (S, M, 42...)">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Категория</div>
+            <div class="segment-control" id="category-selector" style="margin-bottom: 20px;">
+                <div class="segment-btn active" data-val="all" onclick="selectSegment('category', this)">Всё</div>
+                <div class="segment-btn" data-val="clothes" onclick="selectSegment('category', this)">👕 Одежда</div>
+                <div class="segment-btn" data-val="shoes" onclick="selectSegment('category', this)">👟 Обувь</div>
+            </div>
+
+            <div class="section-title">Состояние</div>
+            <div class="chips-container" id="conditions-container">
+                <div class="chip" data-val="6" onclick="toggleChip(this)">Новое с биркой</div>
+                <div class="chip" data-val="1" onclick="toggleChip(this)">Новое без бирки</div>
+                <div class="chip" data-val="2" onclick="toggleChip(this)">Отличное</div>
+                <div class="chip" data-val="3" onclick="toggleChip(this)">Хорошее</div>
+                <div class="chip" data-val="4" onclick="toggleChip(this)">Нормальное</div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <button id="submit-btn" class="btn" onclick="sendSearch()">🚀 Начать мониторинг</button>
+        </div>
+    </div>
+
+    <!-- ВКЛАДКА: ПРОФИЛЬ -->
+    <div id="profile" class="content">
+        <div class="card" style="text-align: center; padding: 24px 16px;">
+            <div class="profile-avatar">👨‍💻</div>
+            <h2 id="user-name" style="margin: 0 0 4px 0; font-size: 22px;">Загрузка...</h2>
+            <p style="color: var(--secondary); font-size: 13px; margin: 0 0 16px 0;">ID: <span id="user-id">...</span></p>
+            <div id="status-container"></div>
+        </div>
+        <div class="section-title" style="margin-left: 8px;">Мои поиски</div>
+        <div id="searches-container"></div>
+    </div>
+
+    <!-- ВКЛАДКА: PREMIUM -->
+    <div id="premium" class="content">
+        <div class="premium-card">
+            <div style="font-size: 40px; margin-bottom: 10px;">👑</div>
+            <h2 style="margin: 0 0 20px 0; color: #ffd700;">Vinted Sniper PRO</h2>
+            
+            <div class="section-title" style="color: #8e8e93; text-align: left;">Выберите тариф:</div>
+            
+            <!-- НОВЫЙ ВЫБОР ТАРИФОВ -->
+            <div class="segment-control" id="plan-selector" style="margin-bottom: 20px;">
+                <div class="segment-btn active" data-val="week" onclick="selectPlan(this)">1 Неделя<br><span style="color:#ffd700;">3$</span></div>
+                <div class="segment-btn" data-val="month" onclick="selectPlan(this)">1 Месяц<br><span style="color:#ffd700;">10$</span></div>
+                <div class="segment-btn" data-val="3months" onclick="selectPlan(this)">3 Месяца<br><span style="color:#ffd700;">25$</span></div>
+                <div class="segment-btn" data-val="forever" onclick="selectPlan(this)">Навсегда<br><span style="color:#ffd700;">50$</span></div>
+            </div>
+
+            <button class="btn" style="background: linear-gradient(135deg, #0a84ff, #005bb5); margin-bottom: 10px;" onclick="buyMethod('buy_stars')">
+                ⭐️ Оплатить Звездами
+            </button>
+            <button class="btn" style="background: linear-gradient(135deg, #2b5876, #4e4376); margin-bottom: 10px;" onclick="buyMethod('buy_crypto')">
+                🪙 Оплатить Криптой
+            </button>
+            <button class="btn" style="background: #2c2c2e; color: #fff; font-size: 15px;" onclick="contactAdmin()">
+                💳 Перевод на карту (Админ)
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id') || tg.initDataUnsafe?.user?.id || '—';
+        const premiumDays = parseInt(urlParams.get('days') || '0');
+        const userName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
+        
+        let userSearches = [];
+        try { if (urlParams.get('searches')) userSearches = JSON.parse(decodeURIComponent(urlParams.get('searches'))); } catch(e) {}
+
+        document.getElementById('user-name').innerText = userName;
+        document.getElementById('user-id').innerText = userId;
+        document.getElementById('status-container').innerHTML = premiumDays > 0 
+            ? `<div class="status-badge status-premium">★ PREMIUM (${premiumDays} ДН.)</div>`
+            : `<div class="status-badge status-free">🔴 БЕЗ ПОДПИСКИ</div>`;
+
+        const submitBtn = document.getElementById('submit-btn');
+        if (premiumDays <= 0) {
+            submitBtn.classList.add('disabled');
+            submitBtn.innerText = "🔒 Требуется Premium";
+        }
+
+        const sCont = document.getElementById('searches-container');
+        if (userSearches.length === 0) {
+            sCont.innerHTML = `<div class="card" style="text-align: center; color: var(--secondary); font-size: 14px;">У вас пока нет активных поисков</div>`;
+        } else {
+            userSearches.forEach(s => {
+                let priceText = "Любая цена";
+                if (s.min_price > 0 && s.max_price > 0) priceText = `${s.min_price}€ - ${s.max_price}€`;
+                else if (s.min_price > 0) priceText = `от ${s.min_price}€`;
+                else if (s.max_price > 0) priceText = `до ${s.max_price}€`;
+                
+                const flag = s.domain === 'vinted.it' ? '🇮🇹' : '🇫🇷';
+                sCont.innerHTML += `
+                    <div class="search-item">
+                        <div>
+                            <div style="font-size: 16px; font-weight: 700;">${flag} ${s.brand || 'Любой бренд'}</div>
+                            <div style="color: var(--green); font-size: 14px; font-weight: 600;">💰 ${priceText}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteSearch(${s.id})">Удалить</button>
+                    </div>`;
+            });
+        }
+
+        function contactAdmin() {
+            try { tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
+            tg.openTelegramLink('https://t.me/liknine?text=' + encodeURIComponent("Привет! Хочу купить подписку. ID: " + userId));
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.content, .tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            document.querySelector('.bottom-bar').style.display = tabId === 'search' ? 'block' : 'none';
+        }
+
+        function selectSegment(groupId, el) {
+            document.querySelectorAll(`#${groupId}-selector .segment-btn`).forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            try { tg.HapticFeedback.selectionChanged(); } catch(e){}
+        }
+
+        function selectPlan(el) {
+            document.querySelectorAll('#plan-selector .segment-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            try { tg.HapticFeedback.selectionChanged(); } catch(e){}
+        }
+
+        function toggleChip(el) {
+            el.classList.toggle('selected');
+        }
+
+        function sendSearch() {
+            if (premiumDays <= 0) { tg.showAlert("Купите Premium для использования Снайпера!"); return; }
+            const brand = document.getElementById('brand').value.trim();
+            const min_price = document.getElementById('min_price').value;
+            const max_price = document.getElementById('max_price').value;
+            if (!brand && !max_price) { tg.showAlert("��ведите Бренд или Макс. Цену!"); return; }
+
+            const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
+            
+            // Отправляем min_price в Python
+            const data = {
+                action: "add",
+                domain: document.querySelector('#domain-selector .active').getAttribute('data-val'),
+                category: document.querySelector('#category-selector .active').getAttribute('data-val'),
+                brand: brand,
+                size: document.getElementById('size').value.trim(),
+                min_price: min_price,
+                max_price: max_price,
+                conditions: conditions 
+            };
+            tg.sendData(JSON.stringify(data)); 
+        }
+
+        function deleteSearch(searchId) {
+            tg.showConfirm("Удалить этот поиск?", function(isConfirmed) {
+                if(isConfirmed) tg.sendData(JSON.stringify({ action: "delete", search_id: searchId }));
+            });
+        }
+
+        function buyMethod(method) {
+            try { tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
+            // Узнаем, какой тариф выбран (week, month, 3months, forever)
+            const plan = document.querySelector('#plan-selector .active').getAttribute('data-val');
+            // Отправляем в Python и метод оплаты, и выбранный тариф
+            tg.sendData(JSON.stringify({ action: method, plan: plan }));
+        }
+    </script>
+</body>
+</html>
