@@ -22,16 +22,14 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 110px; }
         
-        /* НАВИГАЦИЯ */
         .tab-bar { display: flex; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 10px 16px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); gap: 10px; }
-        .tab { flex: 1; text-align: center; padding: 10px 0; font-size: 15px; font-weight: 600; color: var(--secondary); cursor: pointer; border-radius: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tab { flex: 1; text-align: center; padding: 10px 0; font-size: 15px; font-weight: 600; color: var(--secondary); cursor: pointer; border-radius: 12px; transition: all 0.3s ease; }
         .tab.active { background: var(--surface); color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         
-        .content { display: none; padding: 16px; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .content { display: none; padding: 16px; animation: fadeIn 0.4s ease; }
         .content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* КАРТОЧКИ И ИНПУТЫ */
         .card { background: var(--surface); border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--border); }
         .section-title { font-size: 13px; font-weight: 700; color: var(--secondary); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
         
@@ -43,22 +41,19 @@
         input::placeholder { color: var(--secondary); font-weight: 400; }
         input:focus { border-color: var(--primary); background: var(--surface); box-shadow: 0 4px 16px rgba(10, 132, 255, 0.15); }
 
-        /* ПЕРЕКЛЮЧАТЕЛИ */
         .segment-control { display: flex; flex-wrap: wrap; gap: 6px; background: var(--input-bg); border-radius: 14px; padding: 6px; }
-        .segment-btn { flex: 1; min-width: 45%; text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: var(--secondary); border-radius: 10px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .segment-btn { flex: 1; min-width: 45%; text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: var(--secondary); border-radius: 10px; cursor: pointer; transition: all 0.3s ease; position: relative; }
         .segment-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: scale(1.02); }
         
         .chips-container { display: flex; flex-wrap: wrap; gap: 10px; }
         .chip { padding: 12px 18px; background: var(--input-bg); border: 2px solid transparent; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: var(--secondary); }
         .chip.selected { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3); transform: translateY(-2px); }
 
-        /* КНОПКИ */
         .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px 20px 32px; background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 100; pointer-events: none; }
         button.btn { width: 100%; background: linear-gradient(135deg, #007aff, #005bb5); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 17px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3); pointer-events: auto; }
         button.btn:active { transform: scale(0.96); opacity: 0.9; }
         button.btn.disabled { background: var(--input-bg); color: var(--secondary); box-shadow: none; cursor: not-allowed; }
 
-        /* ПРОФИЛЬ */
         .profile-avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 8px 20px rgba(161, 140, 209, 0.4); }
         .status-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: 800; font-size: 12px; letter-spacing: 0.5px; }
         .status-free { background: rgba(255, 59, 48, 0.1); color: var(--danger); }
@@ -67,7 +62,6 @@
         .delete-btn { background: rgba(255, 59, 48, 0.1); color: var(--danger); border: none; padding: 10px 16px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .delete-btn:active { transform: scale(0.9); }
 
-        /* ПРЕМИУМ БЛОК */
         .premium-card { background: linear-gradient(145deg, #1c1c1e, #000000); border: 1px solid #38383a; color: white; border-radius: 24px; padding: 30px 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         .premium-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 60%); z-index: 0; pointer-events: none; }
         .premium-content { position: relative; z-index: 1; }
@@ -166,6 +160,7 @@
                 
                 <div class="section-title" style="color: #8e8e93; text-align: left; margin-bottom: 16px;">1. Выберите тариф:</div>
                 
+                <!-- 5 ТАРИФОВ ЗДЕСЬ -->
                 <div class="segment-control" id="plan-selector" style="background: rgba(255,255,255,0.05); margin-bottom: 24px; padding: 8px;">
                     <div class="segment-btn active" data-val="week" onclick="selectPlan(this)">Неделя <span class="plan-price">3$</span></div>
                     <div class="segment-btn" data-val="month" onclick="selectPlan(this)">Месяц <div class="badge-hit">🔥 ХИТ</div><span class="plan-price">10$</span></div>
