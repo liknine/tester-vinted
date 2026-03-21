@@ -59,7 +59,10 @@
         .status-free { background: rgba(255, 59, 48, 0.1); color: var(--danger); }
         .status-premium { background: linear-gradient(135deg, #ffd700, #ff9500); color: #000; box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3); }
         .search-item { display: flex; justify-content: space-between; align-items: center; background: var(--surface); padding: 18px; border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-        .delete-btn { background: rgba(255, 59, 48, 0.1); color: var(--danger); border: none; padding: 10px 16px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .action-buttons { display: flex; gap: 8px; }
+        .edit-btn { background: rgba(10, 132, 255, 0.1); color: var(--primary); border: none; padding: 10px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 16px; }
+        .edit-btn:active { transform: scale(0.9); }
+        .delete-btn { background: rgba(255, 59, 48, 0.1); color: var(--danger); border: none; padding: 10px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 16px; }
         .delete-btn:active { transform: scale(0.9); }
 
         .premium-card { background: linear-gradient(145deg, #1c1c1e, #000000); border: 1px solid #38383a; color: white; border-radius: 24px; padding: 30px 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
@@ -206,6 +209,7 @@
         const userName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
         
         let userSearches = [];
+        let currentEditId = null; // Флаг: редактируем ли мы сейчас?
         try { if (urlParams.get('searches')) userSearches = JSON.parse(decodeURIComponent(urlParams.get('searches'))); } catch(e) {}
 
         document.getElementById('user-name').innerText = userName;
@@ -237,7 +241,10 @@
                             <div style="font-size: 17px; font-weight: 800; margin-bottom: 4px;">${flag} ${s.brand || 'Любой бренд'}</div>
                             <div style="color: var(--green); font-size: 14px; font-weight: 700;">💰 ${priceText}</div>
                         </div>
-                        <button class="delete-btn" onclick="deleteSearch(${s.id})">Удалить</button>
+                        <div class="action-buttons">
+                            <button class="edit-btn" onclick="startEdit(${s.id})">✏️</button>
+                            <button class="delete-btn" onclick="deleteSearch(${s.id})">🗑</button>
+                        </div>
                     </div>`;
             });
         }
@@ -282,6 +289,24 @@
             const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
             
             const data = {
+                action: currentEditId ? "edit" : "add", // Если есть ID, то редактируем
+                search_id: currentEditId,
+                domain: document.querySelector('#domain-selector .active').getAttribute('data-val'),
+                category: document.querySelector('#category-selector .active').getAttribute('data-val'),
+                brand: brand,
+                size: document.getElementById('size').value.trim(),
+                min_price: min_price,
+                max_price: max_price,
+                minus_words: document.getElementById('minus_words').value.trim(),
+                conditions: conditions 
+            };
+            try { tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
+            tg.sendData(JSON.stringify(data)); 
+        }
+
+            const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
+            
+            const data = {
                 action: "add",
                 domain: document.querySelector('#domain-selector .active').getAttribute('data-val'),
                 category: document.querySelector('#category-selector .active').getAttribute('data-val'),
@@ -294,6 +319,51 @@
             };
             try { tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
             tg.sendData(JSON.stringify(data)); 
+        
+
+        function startEdit(id) {
+            const s = userSearches.find(x => x.id === id);
+            if (!s) return;
+            
+            currentEditId = id;
+            try { tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
+            
+            // Заполняем поля старыми данными
+            document.getElementById('brand').value = s.brand || '';
+            document.getElementById('min_price').value = s.min_price || '';
+            document.getElementById('max_price').value = s.max_price || '';
+            document.getElementById('size').value = s.size || '';
+            document.getElementById('minus_words').value = s.minus_words || '';
+            
+            // Выбираем страну и категорию
+            document.querySelectorAll('#domain-selector .segment-btn').forEach(b => {
+                b.classList.remove('active');
+                if (b.getAttribute('data-val') === s.domain) b.classList.add('active');
+            });
+            document.querySelectorAll('#category-selector .segment-btn').forEach(b => {
+                b.classList.remove('active');
+                if (b.getAttribute('data-val') === s.category) b.classList.add('active');
+            });
+            
+            // Выбираем состояния
+            document.querySelectorAll('#conditions-container .chip').forEach(c => c.classList.remove('selected'));
+            if (s.conditions) {
+                try {
+                    const conds = JSON.parse(s.conditions);
+                    document.querySelectorAll('#conditions-container .chip').forEach(c => {
+                        if (conds.includes(parseInt(c.getAttribute('data-val')))) c.classList.add('selected');
+                    });
+                } catch(e) {}
+            }
+            
+            // Меняем вид кнопки
+            const btn = document.getElementById('submit-btn');
+            btn.innerText = "💾 Сохранить изменения";
+            btn.style.background = "linear-gradient(135deg, #34c759, #28a745)";
+            
+            // Перекидываем на вкладку поиска
+            switchTab('search');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function deleteSearch(searchId) {
