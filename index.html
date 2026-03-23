@@ -383,7 +383,8 @@
                 else if (minP) priceText = `от ${minP}€`;
                 else if (maxP) priceText = `до ${maxP}€`;
                 
-                const flag = flags[s.domain] || '🌐';
+                        const domainArray = s.domain.split(',');
+                const flag = domainArray.map(d => flags[d.trim()] || '🌐').join(' ');
                 
                 sCont.innerHTML += `
                     <div class="search-item">
@@ -415,6 +416,20 @@
             try { tg.HapticFeedback.selectionChanged(); } catch(e){}
         }
 
+                // Мульти-выбор для стран
+        function toggleDomain(el) {
+            const activeDomains = document.querySelectorAll('#domain-selector .active');
+            
+            // Если пытаемся снять выделение с последней активной страны — не даем
+            if (el.classList.contains('active') && activeDomains.length === 1) {
+                try { tg.HapticFeedback.notificationOccurred('warning'); } catch(e){}
+                return;
+            }
+            
+            el.classList.toggle('active');
+            try { tg.HapticFeedback.selectionChanged(); } catch(e){}
+        }
+
         function selectPlan(el) {
             document.querySelectorAll('#plan-selector .segment-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
@@ -440,9 +455,14 @@
             document.getElementById('size').value = s.size || '';
             document.getElementById('minus_words').value = s.minus_words || '';
             
+                        // Подстановка стран (мульти-выбор)
+            const savedDomains = s.domain.split(',').map(d => d.trim());
             document.querySelectorAll('#domain-selector .segment-btn').forEach(b => {
-                b.classList.remove('active');
-                if (b.getAttribute('data-val') === s.domain) b.classList.add('active');
+                if (savedDomains.includes(b.getAttribute('data-val'))) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
             });
             document.querySelectorAll('#category-selector .segment-btn').forEach(b => {
                 b.classList.remove('active');
@@ -477,12 +497,15 @@
             
             if (!brand && !max_price) { tg.showAlert("Введите Бренд или Макс. Цену!"); return; }
 
-            const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
+                        const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
+            
+            // СОБИРАЕМ ВСЕ ВЫБРАННЫЕ СТРАНЫ В МАССИВ
+            const selectedDomains = Array.from(document.querySelectorAll('#domain-selector .active')).map(el => el.getAttribute('data-val'));
             
             const data = {
                 action: currentEditId ? "edit" : "add",
                 search_id: currentEditId,
-                domain: document.querySelector('#domain-selector .active').getAttribute('data-val'),
+                domain: selectedDomains, // Передаем массив стран!
                 category: document.querySelector('#category-selector .active').getAttribute('data-val'),
                 brand: brand,
                 size: document.getElementById('size').value.trim(),
