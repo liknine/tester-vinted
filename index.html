@@ -192,12 +192,12 @@
         <div class="card">
             <div class="section-title">География парсинга</div>
             <div class="segment-control" id="domain-selector">
-                <div class="segment-btn active" data-val="vinted.fr" onclick="selectSegment('domain', this)">🇫🇷 FR</div>
-                <div class="segment-btn" data-val="vinted.it" onclick="selectSegment('domain', this)">🇮🇹 IT</div>
-                <div class="segment-btn" data-val="vinted.pl" onclick="selectSegment('domain', this)">🇵🇱 PL</div>
-                <div class="segment-btn" data-val="vinted.es" onclick="selectSegment('domain', this)">🇪🇸 ES</div>
-                <div class="segment-btn" data-val="vinted.de" onclick="selectSegment('domain', this)">🇩🇪 DE</div>
-            </div>
+    <div class="segment-btn active" data-val="vinted.fr" onclick="toggleDomain(this)">🇫🇷 FR</div>
+    <div class="segment-btn" data-val="vinted.it" onclick="toggleDomain(this)">🇮🇹 IT</div>
+    <div class="segment-btn" data-val="vinted.pl" onclick="toggleDomain(this)">🇵🇱 PL</div>
+    <div class="segment-btn" data-val="vinted.es" onclick="toggleDomain(this)">🇪🇸 ES</div>
+    <div class="segment-btn" data-val="vinted.de" onclick="toggleDomain(this)">🇩🇪 DE</div>
+</div>
         </div>
 
         <div class="card">
@@ -488,7 +488,11 @@
         }
 
         // Отправка данных в ПИТОН
+                let isSubmitting = false; // Переменная-защита от двойного клика
+
         function sendSearch() {
+            if (isSubmitting) return; // Если уже нажали, игнорируем второй клик
+            
             if (premiumDays <= 0) { tg.showAlert("Купите Premium для использования Снайпера!"); return; }
             
             const brand = document.getElementById('brand').value.trim();
@@ -497,7 +501,12 @@
             
             if (!brand && !max_price) { tg.showAlert("Введите Бренд или Макс. Цену!"); return; }
 
-                        const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
+            // Блокируем кнопку
+            isSubmitting = true; 
+            document.getElementById('submit-btn').innerText = "⏳ Отправка...";
+            document.getElementById('submit-btn').style.opacity = "0.7";
+
+            const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
             
             // СОБИРАЕМ ВСЕ ВЫБРАННЫЕ СТРАНЫ В МАССИВ
             const selectedDomains = Array.from(document.querySelectorAll('#domain-selector .active')).map(el => el.getAttribute('data-val'));
@@ -505,7 +514,7 @@
             const data = {
                 action: currentEditId ? "edit" : "add",
                 search_id: currentEditId,
-                domain: selectedDomains, // Передаем массив стран!
+                domain: selectedDomains, 
                 category: document.querySelector('#category-selector .active').getAttribute('data-val'),
                 brand: brand,
                 size: document.getElementById('size').value.trim(),
