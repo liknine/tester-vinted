@@ -125,57 +125,15 @@
         .premium-content { position: relative; z-index: 1; }
         .badge-hit { position: absolute; top: -10px; right: -10px; background: linear-gradient(135deg, #ff3b30, #ff9500); color: white; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 2px solid var(--surface); box-shadow: 0 4px 8px rgba(255,59,48,0.4); z-index: 2;}
         .plan-price { font-size: 18px; color: var(--gold); font-weight: 800; margin-top: 4px; display: block; }
-        /* Новые стили для центрирования категорий (иконка сверху) */
-        .btn-col { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 4px; 
-            padding: 10px 4px;
-        }
-        .emoji-top { 
-            font-size: 22px; 
-            line-height: 1; 
-        }
-        /* --- Стили для красивой сетки тарифов --- */
-.plans-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px 8px; /* 18px между строками (чтобы бейджи не наезжали), 8px между колонками */
-    background: rgba(255,255,255,0.05);
-    border-radius: 14px;
-    padding: 16px 8px 8px 8px; /* Увеличен верхний отступ для первого бейджа */
-    justify-content: center;
-}
-
-/* Сброс старых отступов для этой сетки */
-.plans-grid .segment-btn { margin: 0 !important; position: relative; }
-
-/* Центрированные бейджи */
-.plan-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.2);
-    white-space: nowrap;
-    z-index: 2;
-}
-
-/* Выделение тарифа "Месяц" */
-.plan-month {
-    background: rgba(255, 215, 0, 0.08) !important; /* Легкий золотой фон */
-    border: 1px solid rgba(255, 215, 0, 0.4);
-}
-.segment-btn.active.plan-month {
-    background: var(--surface) !important; 
-    border-color: #ffd700;
-}
+        
+        .btn-col { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 10px 4px; }
+        .emoji-top { font-size: 22px; line-height: 1; }
+        
+        .plans-grid { display: flex; flex-wrap: wrap; gap: 18px 8px; background: rgba(255,255,255,0.05); border-radius: 14px; padding: 16px 8px 8px 8px; justify-content: center; }
+        .plans-grid .segment-btn { margin: 0 !important; position: relative; }
+        .plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; z-index: 2; }
+        .plan-month { background: rgba(255, 215, 0, 0.08) !important; border: 1px solid rgba(255, 215, 0, 0.4); }
+        .segment-btn.active.plan-month { background: var(--surface) !important; border-color: #ffd700; }
     </style>
 </head>
 <body>
@@ -190,14 +148,15 @@
     <!-- ВКЛАДКА: ПОИСК (СОЗДАНИЕ ЗАСАДЫ) -->
     <div id="search" class="content active">
         <div class="card">
-            <div class="section-title">География парсинга</div>
+            <div class="section-title">География парсинга (можно выбрать несколько)</div>
             <div class="segment-control" id="domain-selector">
-    <div class="segment-btn active" data-val="vinted.fr" onclick="toggleDomain(this)">🇫🇷 FR</div>
-    <div class="segment-btn" data-val="vinted.it" onclick="toggleDomain(this)">🇮🇹 IT</div>
-    <div class="segment-btn" data-val="vinted.pl" onclick="toggleDomain(this)">🇵🇱 PL</div>
-    <div class="segment-btn" data-val="vinted.es" onclick="toggleDomain(this)">🇪🇸 ES</div>
-    <div class="segment-btn" data-val="vinted.de" onclick="toggleDomain(this)">🇩🇪 DE</div>
-</div>
+                <!-- ЗДЕСЬ ИСПРАВЛЕНЫ КНОПКИ ДЛЯ МУЛЬТИ-ВЫБОРА СТРАН -->
+                <div class="segment-btn active" data-val="vinted.fr" onclick="toggleDomain(this)">🇫🇷 FR</div>
+                <div class="segment-btn" data-val="vinted.it" onclick="toggleDomain(this)">🇮🇹 IT</div>
+                <div class="segment-btn" data-val="vinted.pl" onclick="toggleDomain(this)">🇵🇱 PL</div>
+                <div class="segment-btn" data-val="vinted.es" onclick="toggleDomain(this)">🇪🇸 ES</div>
+                <div class="segment-btn" data-val="vinted.de" onclick="toggleDomain(this)">🇩🇪 DE</div>
+            </div>
         </div>
 
         <div class="card">
@@ -226,11 +185,11 @@
                     <input type="text" id="size" placeholder="Размер (S, M, 42...)">
                 </div>
             </div>
-
+            
             <!-- МИНУС СЛОВА -->
             <div class="input-group" style="margin-top: 14px;">
                 <div class="input-wrapper">
-                    <span class="input-icon">🚫</span>
+                    <span class="input-icon">��</span>
                     <input type="text" id="minus_words" placeholder="Исключить слова (через запятую)">
                 </div>
             </div>
@@ -241,12 +200,10 @@
             <div class="section-title">Категория</div>
             <div class="segment-control" id="category-selector" style="margin-bottom: 24px; align-items: stretch;">
                 <div class="segment-btn active btn-col" data-val="all" onclick="selectSegment('category', this)">Все</div>
-                
                 <div class="segment-btn btn-col" data-val="clothes" onclick="selectSegment('category', this)">
                     <span class="emoji-top">👕</span>
                     <span>Одежда</span>
                 </div>
-                
                 <div class="segment-btn btn-col" data-val="shoes" onclick="selectSegment('category', this)">
                     <span class="emoji-top">👟</span>
                     <span>Обувь</span>
@@ -268,7 +225,7 @@
         </div>
     </div>
 
-    <!-- ВКЛАДКА: ПРОФИЛЬ (АКТИВНЫЕ ЗАСАДЫ И РЕДАКТИРОВАНИЕ) -->
+    <!-- ВКЛАДКА: ПРОФИЛЬ -->
     <div id="profile" class="content">
         <div class="card" style="text-align: center; padding: 32px 20px;">
             <div class="profile-avatar">👨‍💻</div>
@@ -280,7 +237,7 @@
         <div id="searches-container"></div>
     </div>
 
-    <!-- ВКЛАДКА: PREMIUM (ТАРИФЫ И ОПЛАТА) -->
+    <!-- ВКЛАДКА: PREMIUM -->
     <div id="premium" class="content">
         <div class="premium-card">
             <div class="premium-content">
@@ -289,48 +246,25 @@
                 
                 <div class="section-title" style="color: #8e8e93; text-align: left; margin-bottom: 16px;">1. Выберите тариф:</div>
                 
-<div class="plans-grid" id="plan-selector" style="margin-bottom: 24px;">
-    
-    <!-- Неделя -->
-    <div class="segment-btn active" data-val="week" onclick="selectPlan(this)" style="flex: 1 1 28%;">
-        Неделя <span class="plan-price">3$</span>
-    </div>
-    
-    <!-- Месяц (Выделенный) -->
-    <div class="segment-btn plan-month" data-val="month" onclick="selectPlan(this)" style="flex: 1 1 28%;">
-        <div class="plan-badge" style="background: linear-gradient(135deg, #ff3b30, #ff9500); color: white; box-shadow: 0 4px 8px rgba(255,59,48,0.4);">🔥 ХИТ</div>
-        Месяц <span class="plan-price">10$</span>
-    </div>
-    
-    <!-- 3 Месяца -->
-    <div class="segment-btn" data-val="3months" onclick="selectPlan(this)" style="flex: 1 1 28%;">
-        3 Месяца <span class="plan-price">25$</span>
-    </div>
-    
-    <!-- 1 Год (Теперь слева, делит ряд пополам) -->
-    <div class="segment-btn" data-val="year" onclick="selectPlan(this)" style="flex: 1 1 45%;">
-        <div class="plan-badge" style="background: linear-gradient(135deg, #af52de, #5e5ce6); color: white; box-shadow: 0 4px 8px rgba(175, 82, 222, 0.4);">🚀 МЕГА ХИТ</div>
-        1 Год <span class="plan-price">90$</span>
-    </div>
-    
-    <!-- Навсегда (Теперь справа, делит ряд пополам) -->
-    <div class="segment-btn" data-val="forever" onclick="selectPlan(this)" style="flex: 1 1 45%;">
-        Навсегда <span class="plan-price">150$</span>
-    </div>
-    
-</div>
+                <div class="plans-grid" id="plan-selector" style="margin-bottom: 24px;">
+                    <div class="segment-btn active" data-val="week" onclick="selectPlan(this)" style="flex: 1 1 28%;">Неделя <span class="plan-price">3$</span></div>
+                    <div class="segment-btn plan-month" data-val="month" onclick="selectPlan(this)" style="flex: 1 1 28%;">
+                        <div class="plan-badge" style="background: linear-gradient(135deg, #ff3b30, #ff9500); color: white; box-shadow: 0 4px 8px rgba(255,59,48,0.4);">🔥 ХИТ</div>
+                        Месяц <span class="plan-price">10$</span>
+                    </div>
+                    <div class="segment-btn" data-val="3months" onclick="selectPlan(this)" style="flex: 1 1 28%;">3 Месяца <span class="plan-price">25$</span></div>
+                    <div class="segment-btn" data-val="year" onclick="selectPlan(this)" style="flex: 1 1 45%;">
+                        <div class="plan-badge" style="background: linear-gradient(135deg, #af52de, #5e5ce6); color: white; box-shadow: 0 4px 8px rgba(175, 82, 222, 0.4);">🚀 МЕГА ХИТ</div>
+                        1 Год <span class="plan-price">90$</span>
+                    </div>
+                    <div class="segment-btn" data-val="forever" onclick="selectPlan(this)" style="flex: 1 1 45%;">Навсегда <span class="plan-price">150$</span></div>
+                </div>
 
                 <div class="section-title" style="color: #8e8e93; text-align: left; margin-bottom: 16px;">2. Метод оплаты:</div>
 
-                <button class="btn" style="background: linear-gradient(135deg, #0a84ff, #005bb5); margin-bottom: 12px; position: relative; z-index: 10;" onclick="buyMethod('buy_stars')">
-                    ⭐️ Оплатить Звездами
-                </button>
-                <button class="btn" style="background: linear-gradient(135deg, #2b5876, #4e4376); margin-bottom: 12px; box-shadow: 0 8px 24px rgba(78, 67, 118, 0.4); position: relative; z-index: 10;" onclick="buyMethod('buy_crypto')">
-                    🪙 Оплатить Криптой (USDT)
-                </button>
-                <button class="btn" style="background: rgba(255,255,255,0.1); color: #fff; font-size: 15px; box-shadow: none; position: relative; z-index: 10;" onclick="contactAdmin()">
-                    💳 Перевод на карту (Админ)
-                </button>
+                <button class="btn" style="background: linear-gradient(135deg, #0a84ff, #005bb5); margin-bottom: 12px; position: relative; z-index: 10;" onclick="buyMethod('buy_stars')">⭐️ Оплатить Звездами</button>
+                <button class="btn" style="background: linear-gradient(135deg, #2b5876, #4e4376); margin-bottom: 12px; box-shadow: 0 8px 24px rgba(78, 67, 118, 0.4); position: relative; z-index: 10;" onclick="buyMethod('buy_crypto')">🪙 Оплатить Криптой (USDT)</button>
+                <button class="btn" style="background: rgba(255,255,255,0.1); color: #fff; font-size: 15px; box-shadow: none; position: relative; z-index: 10;" onclick="contactAdmin()">💳 Перевод на карту (Админ)</button>
             </div>
         </div>
     </div>
@@ -347,7 +281,7 @@
         const userName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
         
         let userSearches = [];
-        let currentEditId = null; // Флаг: редактируем ли мы сейчас поиск
+        let currentEditId = null; 
         
         try { 
             if (urlParams.get('searches')) {
@@ -383,7 +317,8 @@
                 else if (minP) priceText = `от ${minP}€`;
                 else if (maxP) priceText = `до ${maxP}€`;
                 
-                        const domainArray = s.domain.split(',');
+                // ЗДЕСЬ ИСПРАВЛЕН ВЫВОД ФЛАГОВ ДЛЯ МУЛЬТИ-СТРАН
+                const domainArray = (s.domain || 'vinted.fr').split(',');
                 const flag = domainArray.map(d => flags[d.trim()] || '🌐').join(' ');
                 
                 sCont.innerHTML += `
@@ -409,23 +344,21 @@
             try { tg.HapticFeedback.impactOccurred('light'); } catch(e){}
         }
 
-        // Переключатели
+        // Обычные переключатели (категории, тарифы)
         function selectSegment(groupId, el) {
             document.querySelectorAll(`#${groupId}-selector .segment-btn`).forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             try { tg.HapticFeedback.selectionChanged(); } catch(e){}
         }
 
-                // Мульти-выбор для стран
+        // ЗДЕСЬ ДОБАВЛЕНА НОВАЯ ФУНКЦИЯ ДЛЯ МУЛЬТИ-ВЫБОРА СТРАН
         function toggleDomain(el) {
             const activeDomains = document.querySelectorAll('#domain-selector .active');
-            
-            // Если пытаемся снять выделение с последней активной страны — не даем
+            // Не даем снять выделение с последней активной страны
             if (el.classList.contains('active') && activeDomains.length === 1) {
                 try { tg.HapticFeedback.notificationOccurred('warning'); } catch(e){}
                 return;
             }
-            
             el.classList.toggle('active');
             try { tg.HapticFeedback.selectionChanged(); } catch(e){}
         }
@@ -441,7 +374,7 @@
             try { tg.HapticFeedback.selectionChanged(); } catch(e){}
         }
 
-        // Редактирование (Подстановка старых данных)
+        // Редактирование
         function startEdit(id) {
             const s = userSearches.find(x => x.id === id);
             if (!s) return;
@@ -455,8 +388,8 @@
             document.getElementById('size').value = s.size || '';
             document.getElementById('minus_words').value = s.minus_words || '';
             
-                        // Подстановка стран (мульти-выбор)
-            const savedDomains = s.domain.split(',').map(d => d.trim());
+            // ЗДЕСЬ ИСПРАВЛЕНО ДЛЯ МУЛЬТИ-СТРАН
+            const savedDomains = (s.domain || 'vinted.fr').split(',').map(d => d.trim());
             document.querySelectorAll('#domain-selector .segment-btn').forEach(b => {
                 if (savedDomains.includes(b.getAttribute('data-val'))) {
                     b.classList.add('active');
@@ -464,6 +397,7 @@
                     b.classList.remove('active');
                 }
             });
+
             document.querySelectorAll('#category-selector .segment-btn').forEach(b => {
                 b.classList.remove('active');
                 if (b.getAttribute('data-val') === s.category) b.classList.add('active');
@@ -487,11 +421,11 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Отправка данных в ПИТОН
-                let isSubmitting = false; // Переменная-защита от двойного клика
+        // Флаг защиты от двойного нажатия (ЗДЕСЬ ИСПРАВЛЕНО ДВОЙНОЕ СОЗДАНИЕ)
+        let isSubmitting = false;
 
         function sendSearch() {
-            if (isSubmitting) return; // Если уже нажали, игнорируем второй клик
+            if (isSubmitting) return; // Блокируем, если уже нажато
             
             if (premiumDays <= 0) { tg.showAlert("Купите Premium для использования Снайпера!"); return; }
             
@@ -501,20 +435,22 @@
             
             if (!brand && !max_price) { tg.showAlert("Введите Бренд или Макс. Цену!"); return; }
 
-            // Блокируем кнопку
-            isSubmitting = true; 
-            document.getElementById('submit-btn').innerText = "⏳ Отправка...";
-            document.getElementById('submit-btn').style.opacity = "0.7";
+            // Блокируем кнопку визульно и логически
+            isSubmitting = true;
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "⏳ Отправка...";
+            btn.style.opacity = "0.7";
 
             const conditions = Array.from(document.querySelectorAll('#conditions-container .chip.selected')).map(el => parseInt(el.getAttribute('data-val')));
             
-            // СОБИРАЕМ ВСЕ ВЫБРАННЫЕ СТРАНЫ В МАССИВ
+            // ЗДЕСЬ СОБИРАЕТСЯ МАССИВ СТРАН
             const selectedDomains = Array.from(document.querySelectorAll('#domain-selector .active')).map(el => el.getAttribute('data-val'));
             
             const data = {
                 action: currentEditId ? "edit" : "add",
                 search_id: currentEditId,
-                domain: selectedDomains, 
+                domain: selectedDomains, // Массив стран летит в питон
                 category: document.querySelector('#category-selector .active').getAttribute('data-val'),
                 brand: brand,
                 size: document.getElementById('size').value.trim(),
@@ -526,6 +462,13 @@
             
             try { tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
             tg.sendData(JSON.stringify(data)); 
+
+            // На случай если WebApp не закрылся сразу, разблокируем кнопку через 2 секунды
+            setTimeout(() => {
+                isSubmitting = false;
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+            }, 2000);
         }
 
         function deleteSearch(searchId) {
