@@ -2,190 +2,140 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Vinted Sniper</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Sniper</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div class="app">
+<div class="app">
 
-    <!-- TAB: SEARCH -->
-    <div class="tab-page active" id="tabSearch">
-      <div class="page-header">
-        <h1>Поиск</h1>
-        <p class="subtitle">Настрой засаду на любую вещь</p>
-      </div>
-
-      <div class="card" id="formCard">
-        <div class="card-head">
-          <h2 id="formTitle">Новая засада</h2>
-          <button class="btn-icon hidden" id="cancelEditBtn" type="button">✕</button>
-        </div>
-        <form id="searchForm" autocomplete="off">
-
-          <div class="form-group">
-            <label>🔍 Запрос</label>
-            <input id="query" name="query" type="text" placeholder="bape tiger, nike dunk..." maxlength="120" required>
-            <span class="hint">Бот автоматически подберёт варианты написания</span>
-          </div>
-
-          <div class="form-group">
-            <label>🌍 Домены Vinted</label>
-            <div class="domain-grid" id="domainGrid"></div>
-          </div>
-
-          <div class="row-2">
-            <div class="form-group">
-              <label>📂 Категория</label>
-              <select id="category" name="category">
-                <option value="all">Все</option>
-                <option value="clothes">Одежда</option>
-                <option value="shoes">Обувь</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>📐 Размер</label>
-              <input id="size" name="size" type="text" placeholder="M, L, XL / 42">
-            </div>
-          </div>
-
-          <div class="row-3">
-            <div class="form-group">
-              <label>💰 Мин. цена</label>
-              <input id="min_price" name="min_price" type="number" min="0" step="1" placeholder="0">
-            </div>
-            <div class="form-group">
-              <label>💰 Макс. цена</label>
-              <input id="max_price" name="max_price" type="number" min="0" step="1" placeholder="500">
-            </div>
-            <div class="form-group">
-              <label>🚫 Минус-слова</label>
-              <input id="minus_words" name="minus_words" type="text" placeholder="kids, fake">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>✨ Состояние</label>
-            <div class="chips" id="conditionChips"></div>
-          </div>
-
-          <button type="submit" class="btn-primary full-w" id="submitBtn">Создать засаду</button>
-        </form>
-      </div>
+  <!-- SEARCH -->
+  <div class="page active" id="tabSearch">
+    <div class="page-top">
+      <h1>Search</h1>
+      <p class="page-sub">Create a new ambush</p>
     </div>
-
-    <!-- TAB: PROFILE -->
-    <div class="tab-page" id="tabProfile">
-      <div class="page-header">
-        <h1>Профиль</h1>
-        <p class="subtitle">Аккаунт и активные засады</p>
+    <div class="block" id="formCard">
+      <div class="block-top">
+        <span class="block-title" id="formTitle">New ambush</span>
+        <button class="x-btn hidden" id="cancelEditBtn" type="button">&times;</button>
       </div>
-
-      <div class="card profile-card">
-        <div class="profile-avatar" id="profileAvatar">
-          <span id="profileAvatarLetter">?</span>
-          <img id="profileAvatarImg" class="hidden" alt="avatar">
+      <form id="searchForm" autocomplete="off">
+        <div class="field">
+          <label>Query</label>
+          <input id="query" type="text" placeholder="bape tiger, nike dunk..." maxlength="120" required>
+          <span class="field-hint">Bot will generate search variants automatically</span>
         </div>
-        <div class="profile-name" id="profileName">—</div>
-        <div class="profile-username" id="profileUsername">—</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">🆔</div>
-          <div>
-            <div class="stat-label">Telegram ID</div>
-            <div class="stat-value" id="statId">—</div>
+        <div class="field">
+          <label>Domains</label>
+          <div class="domains" id="domainGrid"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Category</label>
+            <select id="category">
+              <option value="all">All</option>
+              <option value="clothes">Clothing</option>
+              <option value="shoes">Shoes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Size</label>
+            <input id="size" type="text" placeholder="M, L, XL / 42">
           </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">👑</div>
-          <div>
-            <div class="stat-label">Premium</div>
-            <div class="stat-value" id="statPremium">—</div>
+        <div class="grid-3">
+          <div class="field">
+            <label>Min price</label>
+            <input id="min_price" type="number" min="0" step="1" placeholder="0">
+          </div>
+          <div class="field">
+            <label>Max price</label>
+            <input id="max_price" type="number" min="0" step="1" placeholder="500">
+          </div>
+          <div class="field">
+            <label>Exclude</label>
+            <input id="minus_words" type="text" placeholder="kids, fake">
           </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">📅</div>
-          <div>
-            <div class="stat-label">Дней осталось</div>
-            <div class="stat-value" id="statDays">—</div>
-          </div>
+        <div class="field">
+          <label>Condition</label>
+          <div class="tags" id="conditionChips"></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">🎯</div>
-          <div>
-            <div class="stat-label">Засад активно</div>
-            <div class="stat-value" id="statSearches">—</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <h2>Активные засады</h2>
-          <span class="badge-count" id="searchCountLabel">0</span>
-        </div>
-        <div id="searchList" class="search-list"></div>
-      </div>
-
-      <div class="contact-card card">
-        <div class="contact-inner">
-          <div>
-            <div class="contact-title">✍️ Для выкупа пиши мне!</div>
-            <div class="contact-sub">Помогу забрать любую вещь</div>
-          </div>
-          <button class="btn-contact" id="contactBtn">Написать</button>
-        </div>
-      </div>
+        <button type="submit" class="main-btn" id="submitBtn">Create ambush</button>
+      </form>
     </div>
-
-    <!-- TAB: SUBSCRIPTION -->
-    <div class="tab-page" id="tabSubscription">
-      <div class="page-header">
-        <h1>Подписка</h1>
-        <p class="subtitle">Выбери план и способ оплаты</p>
-      </div>
-
-      <div class="sub-status card" id="subStatusCard">
-        <div class="sub-dot" id="subDot"></div>
-        <div>
-          <div class="sub-title" id="subTitle">Premium не активен</div>
-          <div class="sub-desc" id="subDesc">Оформи подписку для работы бота</div>
-        </div>
-      </div>
-
-      <div id="plansList"></div>
-    </div>
-
-    <!-- NAV -->
-    <nav class="bottom-nav">
-      <button class="nav-item active" data-tab="tabSearch">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/>
-        </svg>
-        <span>Поиск</span>
-      </button>
-      <button class="nav-item" data-tab="tabProfile">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-        </svg>
-        <span>Профиль</span>
-      </button>
-      <button class="nav-item" data-tab="tabSubscription">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
-        </svg>
-        <span>Подписка</span>
-      </button>
-    </nav>
   </div>
 
-  <div class="toast hidden" id="toast"></div>
-  <script src="app.js"></script>
+  <!-- PROFILE -->
+  <div class="page" id="tabProfile">
+    <div class="page-top">
+      <h1>Profile</h1>
+      <p class="page-sub">Account & active ambushes</p>
+    </div>
+    <div class="block avatar-block">
+      <div class="ava" id="profileAvatar">
+        <span id="profileAvatarLetter">?</span>
+        <img id="profileAvatarImg" class="hidden" alt="">
+      </div>
+      <div class="ava-name" id="profileName">—</div>
+      <div class="ava-user" id="profileUsername">—</div>
+    </div>
+    <div class="metrics">
+      <div class="metric"><span class="metric-label">ID</span><span class="metric-val" id="statId">—</span></div>
+      <div class="metric"><span class="metric-label">Premium</span><span class="metric-val" id="statPremium">—</span></div>
+      <div class="metric"><span class="metric-label">Days left</span><span class="metric-val" id="statDays">—</span></div>
+      <div class="metric"><span class="metric-label">Ambushes</span><span class="metric-val" id="statSearches">—</span></div>
+    </div>
+    <div class="block">
+      <div class="block-top">
+        <span class="block-title">Active ambushes</span>
+        <span class="pill" id="searchCountLabel">0</span>
+      </div>
+      <div id="searchList" class="s-list"></div>
+    </div>
+    <div class="block cta-block">
+      <div class="cta-inner">
+        <div><div class="cta-title">Need help buying?</div><div class="cta-sub">DM me to purchase any item</div></div>
+        <button class="cta-btn" id="contactBtn">Message</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTION -->
+  <div class="page" id="tabSub">
+    <div class="page-top">
+      <h1>Subscribe</h1>
+      <p class="page-sub">Choose your plan</p>
+    </div>
+    <div class="block status-block">
+      <div class="status-dot" id="subDot"></div>
+      <div><div class="status-title" id="subTitle">Not active</div><div class="status-sub" id="subDesc">Subscribe to start using the bot</div></div>
+    </div>
+    <div id="plansList"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nav-btn active" data-tab="tabSearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <span>Search</span>
+    </button>
+    <button class="nav-btn" data-tab="tabProfile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </button>
+    <button class="nav-btn" data-tab="tabSub">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
+      <span>Subscribe</span>
+    </button>
+  </nav>
+</div>
+<div class="toast hidden" id="toast"></div>
+<script src="app.js"></script>
 </body>
 </html>
