@@ -13,36 +13,34 @@
 <body>
   <div class="app">
 
-    <!-- TAB 1: SEARCH -->
+    <!-- TAB: SEARCH -->
     <div class="tab-page active" id="tabSearch">
       <div class="page-header">
         <h1>Поиск</h1>
-        <p class="subtitle">Настрой параметры и создай поиск</p>
+        <p class="subtitle">Настрой засаду на любую вещь</p>
       </div>
 
       <div class="card" id="formCard">
         <div class="card-head">
-          <h2 id="formTitle">Новый поиск</h2>
-          <button class="btn-icon hidden" id="cancelEditBtn" type="button">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
-          </button>
+          <h2 id="formTitle">Новая засада</h2>
+          <button class="btn-icon hidden" id="cancelEditBtn" type="button">✕</button>
         </div>
-
         <form id="searchForm" autocomplete="off">
+
           <div class="form-group">
-            <label for="query">Запрос</label>
+            <label>🔍 Запрос</label>
             <input id="query" name="query" type="text" placeholder="bape tiger, nike dunk..." maxlength="120" required>
             <span class="hint">Бот автоматически подберёт варианты написания</span>
           </div>
 
           <div class="form-group">
-            <label>Домены</label>
+            <label>🌍 Домены Vinted</label>
             <div class="domain-grid" id="domainGrid"></div>
           </div>
 
           <div class="row-2">
             <div class="form-group">
-              <label for="category">Категория</label>
+              <label>📂 Категория</label>
               <select id="category" name="category">
                 <option value="all">Все</option>
                 <option value="clothes">Одежда</option>
@@ -50,111 +48,103 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="size">Размер</label>
+              <label>📐 Размер</label>
               <input id="size" name="size" type="text" placeholder="M, L, XL / 42">
             </div>
           </div>
 
           <div class="row-3">
             <div class="form-group">
-              <label for="min_price">Мин. цена</label>
+              <label>💰 Мин. цена</label>
               <input id="min_price" name="min_price" type="number" min="0" step="1" placeholder="0">
             </div>
             <div class="form-group">
-              <label for="max_price">Макс. цена</label>
+              <label>💰 Макс. цена</label>
               <input id="max_price" name="max_price" type="number" min="0" step="1" placeholder="500">
             </div>
             <div class="form-group">
-              <label for="minus_words">Минус-слова</label>
+              <label>🚫 Минус-слова</label>
               <input id="minus_words" name="minus_words" type="text" placeholder="kids, fake">
             </div>
           </div>
 
           <div class="form-group">
-            <label>Состояние</label>
+            <label>✨ Состояние</label>
             <div class="chips" id="conditionChips"></div>
           </div>
 
-          <button type="submit" class="btn-primary full-w" id="submitBtn">Создать поиск</button>
+          <button type="submit" class="btn-primary full-w" id="submitBtn">Создать засаду</button>
         </form>
       </div>
     </div>
 
-    <!-- TAB 2: PROFILE -->
+    <!-- TAB: PROFILE -->
     <div class="tab-page" id="tabProfile">
       <div class="page-header">
         <h1>Профиль</h1>
-        <p class="subtitle">Аккаунт и активные поиски</p>
+        <p class="subtitle">Аккаунт и активные засады</p>
       </div>
 
       <div class="card profile-card">
         <div class="profile-avatar" id="profileAvatar">
           <span id="profileAvatarLetter">?</span>
-          <img id="profileAvatarImg" class="hidden" alt="">
+          <img id="profileAvatarImg" class="hidden" alt="avatar">
         </div>
-        <div class="profile-name" id="profileName">--</div>
-        <div class="profile-username" id="profileUsername">--</div>
+        <div class="profile-name" id="profileName">—</div>
+        <div class="profile-username" id="profileUsername">—</div>
       </div>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          </div>
-          <div class="stat-info">
+          <div class="stat-icon">🆔</div>
+          <div>
             <div class="stat-label">Telegram ID</div>
-            <div class="stat-value" id="statId">--</div>
+            <div class="stat-value" id="statId">—</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon accent">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
-          </div>
-          <div class="stat-info">
+          <div class="stat-icon">👑</div>
+          <div>
             <div class="stat-label">Premium</div>
-            <div class="stat-value" id="statPremium">--</div>
+            <div class="stat-value" id="statPremium">—</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon blue">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <div class="stat-info">
+          <div class="stat-icon">📅</div>
+          <div>
             <div class="stat-label">Дней осталось</div>
-            <div class="stat-value" id="statDays">--</div>
+            <div class="stat-value" id="statDays">—</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon green">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-          </div>
-          <div class="stat-info">
-            <div class="stat-label">Активных поисков</div>
-            <div class="stat-value" id="statSearches">--</div>
+          <div class="stat-icon">🎯</div>
+          <div>
+            <div class="stat-label">Засад активно</div>
+            <div class="stat-value" id="statSearches">—</div>
           </div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-head">
-          <h2>Активные поиски</h2>
-          <span class="counter-badge" id="searchCountLabel">0</span>
+          <h2>Активные засады</h2>
+          <span class="badge-count" id="searchCountLabel">0</span>
         </div>
         <div id="searchList" class="search-list"></div>
       </div>
 
-      <div class="card contact-card">
+      <div class="contact-card card">
         <div class="contact-inner">
           <div>
-            <div class="contact-title">Для выкупа пиши мне!</div>
-            <div class="contact-desc">Помогу с покупкой любого товара</div>
+            <div class="contact-title">✍️ Для выкупа пиши мне!</div>
+            <div class="contact-sub">Помогу забрать любую вещь</div>
           </div>
-          <a href="https://t.me/liknine" class="btn-contact" id="contactBtn">Написать</a>
+          <button class="btn-contact" id="contactBtn">Написать</button>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: SUBSCRIPTION -->
+    <!-- TAB: SUBSCRIPTION -->
     <div class="tab-page" id="tabSubscription">
       <div class="page-header">
         <h1>Подписка</h1>
@@ -169,21 +159,27 @@
         </div>
       </div>
 
-      <div class="plans-list" id="plansList"></div>
+      <div id="plansList"></div>
     </div>
 
-    <!-- BOTTOM NAV -->
+    <!-- NAV -->
     <nav class="bottom-nav">
       <button class="nav-item active" data-tab="tabSearch">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/>
+        </svg>
         <span>Поиск</span>
       </button>
       <button class="nav-item" data-tab="tabProfile">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
         <span>Профиль</span>
       </button>
       <button class="nav-item" data-tab="tabSubscription">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
+        </svg>
         <span>Подписка</span>
       </button>
     </nav>
