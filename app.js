@@ -73,12 +73,15 @@
   }
 
   // PROFILE
-  function renderProfile(){
-    var u=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
-    var fn=u?(u.first_name||''):'',ln=u?(u.last_name||''):'',un=u?(u.username||''):'';
-    var name=[fn,ln].filter(Boolean).join(' ')||'User';
-    $('#profileName').textContent=name;
-    $('#profileUsername').textContent=un?'@'+un:'';
+function renderProfile(){
+    var u = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+    var fn = P.get('name') ? decodeURIComponent(P.get('name')) : (u ? (u.first_name||'') : '');
+    var ln = u ? (u.last_name||'') : '';
+    var un = P.get('username') ? decodeURIComponent(P.get('username')) : (u ? (u.username||'') : '');
+    var name = [fn, ln].filter(Boolean).join(' ') || 'User';
+    $('#profileName').textContent = name;
+    $('#profileUsername').textContent = un ? '@' + un : '';
+    // остальное без изменений...
     $('#statId').textContent=userId;
     $('#statPremium').textContent=premDays>0?'Active':'No';
     $('#statDays').textContent=premDays;
